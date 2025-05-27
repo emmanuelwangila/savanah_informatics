@@ -42,7 +42,33 @@ INSTALLED_APPS = [
     'products',
     'customers',
     'orders',
+    'mptt',
+    'oauth2_provider',
+
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'oauth2_provider.backends.OAuth2Backend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ],
+}
+
+OAUTH2_PROVIDER = {
+    'OIDC_ENABLED': True,
+    'OIDC_RSA_PRIVATE_KEY': """
+        
+    """,
+    'SCOPES': {
+        'openid': 'OpenID Connect scope',
+        'profile': 'Access to profile data',
+        'email': 'Access to email',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
