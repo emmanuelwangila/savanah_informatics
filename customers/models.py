@@ -16,6 +16,19 @@ class Customer(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.email})"
     
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customer_set',
+        related_query_name='customer',
+        blank=True,
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customer_set',
+        related_query_name='customer',
+        blank=True,
+    )
+    
 class Meta :
     verbose_name = "Customer"
     verbose_name_plural = "Customers"
