@@ -29,3 +29,20 @@ class ProductViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(categories__in= descendants);
 
         return queryset.distinct()
+    
+
+class CategoryAveragePriceAPIView(generics.GenericAPIView):
+    def get(self , request ,id):
+        Category.objects.get(id= id);
+        descendants =Category.get_descendants(include_self=True)
+        
+        avg_price = Products.objects.filter(
+            categories__in=descendants,
+            is_active=True
+        ).aggregate(avg_price=Avg('price'))['avg_price'] or 0
+        
+        return response({
+            'category_id': id,
+            'category_name': Category.name,
+            'average_price': avg_price
+        })    
