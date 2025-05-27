@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os 
+
+load_dotenv()
+
+OIDC_RSA_PRIVATE_KEY = os.getenv("OIDC_RSA_PRIVATE_KEY").replace('\\n', '\n')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -60,9 +66,7 @@ REST_FRAMEWORK = {
 
 OAUTH2_PROVIDER = {
     'OIDC_ENABLED': True,
-    'OIDC_RSA_PRIVATE_KEY': """
-        
-    """,
+    'OIDC_RSA_PRIVATE_KEY': OIDC_RSA_PRIVATE_KEY,
     'SCOPES': {
         'openid': 'OpenID Connect scope',
         'profile': 'Access to profile data',
