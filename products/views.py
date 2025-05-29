@@ -1,14 +1,10 @@
 from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework import generics
-from.models import Products, Category
-from rest_framework import response
+from rest_framework import viewsets, generics
+from rest_framework.response import Response
 from django.db.models import Avg
+from .models import Products, Category
+from .serializers import ProductSerializer, CategorySerializer
 
-from .serializers import ProductSerializer , CategorySerializer
-
-
-# Create your views here.
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -24,25 +20,24 @@ class ProductViewSet(viewsets.ModelViewSet):
         category_id = self.request.query_params.get('category_id', None)
 
         if category_id:
-            category = Category.obects.get(id=category_id);
-            descendants = category.get_descendants(include_self = True);
-            queryset = queryset.filter(categories__in= descendants);
+            category = Category.objects.get(id=category_id)
+            descendants = category.get_descendants(include_self=True)
+            queryset = queryset.filter(categories__in=descendants)
 
         return queryset.distinct()
-    
 
 class CategoryAveragePriceAPIView(generics.GenericAPIView):
-    def get(self , request ,id):
-        Category.objects.get(id= id);
-        descendants =Category.get_descendants(include_self=True)
-        
+    def get(self, request, id):
+        category = Category.objects.get(id=id)
+        descendants = category.get_descendants(include_self=True)
+
+        # Remove is_active if not present in Products model
         avg_price = Products.objects.filter(
-            categories__in=descendants,
-            is_active=True
+            categories__in=descendants
         ).aggregate(avg_price=Avg('price'))['avg_price'] or 0
-        
-        return response({
-            'category_id': id,
-            'category_name': Category.name,
-            'average_price': avg_price
-        })    
+
+        return Response({
+            'category': category.id,
+            'category_name': category.name,
+            'average-price': avg_price
+        })
