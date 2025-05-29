@@ -10,3 +10,22 @@ Customer = get_user_model()
 
 # Create your tests here.
 class OrderAPITestCase(APITestCase):
+    def setUp(self):
+        self.customer = Customer.objects.create_user(
+            username='testuser1'
+            password='testuserpassword123'
+
+        )
+
+        self.order = Order.objects.create(
+            customer = self.customer,
+            total_price = 100.00
+
+
+        )
+        self.order_item = OrderItem.objects.create(
+            oredr=self.order,
+            product_name ='Test product',
+            quantity=3
+            price_per_item = 33.78
+        )
