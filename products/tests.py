@@ -22,6 +22,16 @@ class ProductAPITestCase(APITestCase):
             self.assertEqual(response.data[0]['name'], self.product.name)
             self.assertEqual(response.data[0]['category'], self.category.id)
 
+        def test_category_average_price(self):
+            response = self.client.get(
+                reverse('category-average-price', args=[self.category.id])
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertEqusl(response.data['average-price'], self.product.price)
+            self.assertEqual(response.data['category'], self.category.id)
+            self.assertEqual(response.data['category_name'], self.category.name)
+
+
              
 
 
