@@ -2,30 +2,32 @@ from django.test import TestCase
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from .models import Order, OrderItem
-from django.contrib.auth.models import get_user_model 
+from django.contrib.auth import get_user_model
 
 Customer = get_user_model()
 
-
-
-# Create your tests here.
 class OrderAPITestCase(APITestCase):
     def setUp(self):
         self.customer = Customer.objects.create_user(
-            username='testuser1'
-            password='testuserpassword123'
-
+            username='testuser1',
+            password='testuserpassword123',
+            email='testuser1@example.com'
         )
 
         self.order = Order.objects.create(
-            customer = self.customer,
-            total_price = 100.00
-
-
+            customer=self.customer,
+            total_amount=100.00  # Use the correct field name from your model
         )
+
         self.order_item = OrderItem.objects.create(
-            oredr=self.order,
-            product_name ='Test product',
-            quantity=3
-            price_per_item = 33.78
+            order=self.order,  # Fixed typo
+            product_name='Test product',
+            quantity=3,
+            price_per_item=33.78
         )
+
+    def test_order_created(self):
+        self.assertEqual(Order.objects.count(), 1)
+        self.assertEqual(OrderItem.objects.count(), 1)
+        self.assertEqual(self.order.customer.username, 'testuser1')
+        self.assertEqual(self.order_item.product_name, 'Test product')
