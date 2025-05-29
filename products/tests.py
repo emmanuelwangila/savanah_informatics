@@ -15,4 +15,8 @@ class ProductAPITestCase(APITestCase):
             category=self.category
 
         )
-        
+        def test_get_product_list(self):
+            response = self.client.get(reverse('product-list'))
+            
+
+
