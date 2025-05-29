@@ -1,9 +1,7 @@
-from django.test import TestCase
 from rest_framework.test import APITestCase
-from django.urls import reverse
 from .models import Order, OrderItem
-from customers.models import Customer
-
+from customers.models import Customer  # Use your custom user model
+from products.models import Products
 
 class OrderAPITestCase(APITestCase):
     def setUp(self):
@@ -12,15 +10,18 @@ class OrderAPITestCase(APITestCase):
             password='testuserpassword123',
             email='testuser1@example.com'
         )
-
+        self.product = Products.objects.create(
+            name='Test Product',
+            description='A product for testing',
+            price=33.78
+        )
         self.order = Order.objects.create(
             customer=self.customer,
-            total_amount=100.00  # Use the correct field name from your model
+            total_amount=100.00
         )
-
         self.order_item = OrderItem.objects.create(
-            order=self.order,  # Fixed typo
-            product='Test product',
+            order=self.order,
+            product=self.product,
             quantity=3,
             price=33.78
         )
@@ -29,4 +30,4 @@ class OrderAPITestCase(APITestCase):
         self.assertEqual(Order.objects.count(), 1)
         self.assertEqual(OrderItem.objects.count(), 1)
         self.assertEqual(self.order.customer.username, 'testuser1')
-        self.assertEqual(self.order_item.product_name, 'Test product')
+        self.assertEqual(self.order_item.product.name, 'Test Product')
