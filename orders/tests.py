@@ -2,9 +2,8 @@ from django.test import TestCase
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from .models import Order, OrderItem
-from django.contrib.auth import get_user_model
+from customers.models import Customer
 
-Customer = get_user_model()
 
 class OrderAPITestCase(APITestCase):
     def setUp(self):
@@ -21,9 +20,9 @@ class OrderAPITestCase(APITestCase):
 
         self.order_item = OrderItem.objects.create(
             order=self.order,  # Fixed typo
-            product_name='Test product',
+            product='Test product',
             quantity=3,
-            price_per_item=33.78
+            price=33.78
         )
 
     def test_order_created(self):
