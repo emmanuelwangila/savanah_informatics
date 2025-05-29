@@ -6,8 +6,8 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name' , 'parent', 'children'] 
 
-        def get_children(self , obj):
-            return CategorySerializer(obj.get_children(), many=True).data
+    def get_children(self , obj):
+        return CategorySerializer(obj.get_children(), many=True).data
         
 class ProductSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(many=True, read_only = True);
@@ -19,4 +19,4 @@ class ProductSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Products
-        fileds = ['id', 'name', 'description', 'price', 'categories', 'created_at', 'updated_at']        
+        fields = ['id', 'name', 'description', 'price', 'categories', 'created_at', 'updated_at']        
