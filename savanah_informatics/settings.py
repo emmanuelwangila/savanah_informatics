@@ -118,10 +118,10 @@ WSGI_APPLICATION = 'savanah_informatics.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'savanah'),
-        'USER': os.getenv('POSTGRES_USER', 'savanahuser'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'savanahpass'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'NAME': os.getenv('POSTGRES_DB', ),
+        'USER': os.getenv('POSTGRES_USER', ),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
