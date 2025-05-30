@@ -55,7 +55,7 @@ class OrderEmailTestCase(APITestCase):
         order_data = {
             "items": [
                 {
-                    "product": self.product.id,
+                    "product_id": self.product.id,
                     "quantity": 3,
                     "price": 960.89
                 }
