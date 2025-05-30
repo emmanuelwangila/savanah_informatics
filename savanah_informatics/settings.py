@@ -68,6 +68,8 @@ REST_FRAMEWORK = {
 OAUTH2_PROVIDER = {
     'OIDC_ENABLED': True,
     'OIDC_RSA_PRIVATE_KEY': OIDC_RSA_PRIVATE_KEY,
+    'AT_USERNAME':os.getenv("AT_USERNAME"),
+    'AT_API_KEY': os.getenv("AT_API_KEY"),
     'SCOPES': {
         'openid': 'OpenID Connect scope',
         'profile': 'Access to profile data',
