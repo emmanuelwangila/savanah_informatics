@@ -24,16 +24,16 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            'id', 'customer', 'status', 'total',
+            'id', 'customer', 'status', 'total_amount',
             'items', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['total', 'created_at', 'updated_at']
+        read_only_fields = ['total_amount', 'created_at', 'updated_at']
 
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
         order = Order.objects.create(**validated_data)
-        total = 0
+        total_amount = 0
         
         for item_data in items_data:
             product = item_data['product']
