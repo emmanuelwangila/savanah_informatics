@@ -17,7 +17,7 @@ class CustomerAdmin(UserAdmin):
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
-        (_('Important dates'), {'fields': ('last_login', 'sign_up_date')}),
+        (_('Important dates'), {'fields': ('last_login', )}),
         (_('Verification'), {'fields': ('email_verified',)}),
     )
 
