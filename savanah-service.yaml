@@ -1,0 +1,14 @@
+# savanah-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: savanah-service
+spec:
+  type: NodePort
+  selector:
+    app: savanah
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 30007
