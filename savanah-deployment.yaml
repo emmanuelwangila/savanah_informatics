@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: savanah-deployment
+  labels:
+    app: savanah
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: savanah
+  template:
+    metadata:
+      labels:
+        app: savanah
+    spec:
+      containers:
+        - name: savanah-container
+          image: emmanuelwangila/savanah:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: savanah-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: savanah-config
+                  key: POSTGRES_USER
+            - name: DEBUG
+              value: "False"
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: savanah-config
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: savanah-config
+                  key: POSTGRES_PORT
+            - name: AT_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: savanah-config
+                  key: AT_USERNAME
+            - name: ADMIN_PHONE_NUMBER
+              valueFrom:
+                configMapKeyRef:
+                  name: savanah-config
+                  key: ADMIN_PHONE_NUMBER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: savanah-secrets
+                  key: POSTGRES_PASSWORD
+            - name: AT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: savanah-secrets
+                  key: AT_API_KEY
+            - name: OIDC_RSA_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: savanah-secrets
+                  key: OIDC_RSA_PRIVATE_KEY
