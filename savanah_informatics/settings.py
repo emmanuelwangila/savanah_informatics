@@ -15,8 +15,9 @@ from dotenv import load_dotenv
 import os 
 
 load_dotenv()
-
-OIDC_RSA_PRIVATE_KEY = os.getenv("OIDC_RSA_PRIVATE_KEY").replace('\\n', '\n')
+OIDC_RSA_PRIVATE_KEY = os.getenv("OIDC_RSA_PRIVATE_KEY")
+if OIDC_RSA_PRIVATE_KEY:
+    OIDC_RSA_PRIVATE_KEY = OIDC_RSA_PRIVATE_KEY.replace('\\n', '\n')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,7 @@ SECRET_KEY = 'django-insecure-y4=%-af@c5qq$@g2776@_szs(xa@8!mi9w0*5bzyvkb*1zbmir
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.49.2']
 
 AT_USERNAME = os.getenv("AT_USERNAME")
 AT_API_KEY = os.getenv("AT_API_KEY")
@@ -41,7 +42,6 @@ ADMIN_PHONE_NUMBER = os.getenv("ADMIN_PHONE_NUMBER")
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -84,6 +84,7 @@ OAUTH2_PROVIDER = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,6 +93,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'savanah_informatics.urls'
 
@@ -123,7 +125,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'HOST': os.getenv('POSTGRES_HOST', 'postgres-service'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
@@ -168,6 +170,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
