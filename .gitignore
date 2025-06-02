@@ -1,0 +1,10 @@
+.# .gitignore
+.env                # Ignore local .env
+.env*.local         # Ignore variants like .env.production.local
+secrets/            # Ignore secret files
+__pycache__/        # Python cache
+*.py[cod]           # More Python cache
+*.sqlite3           # Local SQLite DB
+minikube-linux-amd64
+savanah-secret.yaml
+savanah-config.yaml
